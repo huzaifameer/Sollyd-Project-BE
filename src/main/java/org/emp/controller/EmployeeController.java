@@ -2,19 +2,16 @@ package org.emp.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.emp.dto.EmployeeDto;
-import org.emp.entity.EmployeeEntity;
 import org.emp.service.EmployeeService;
-import org.emp.service.Impl.EmployeeServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/emp-controller")
+@RequestMapping("/employee")
 @RequiredArgsConstructor
+@CrossOrigin
 public class EmployeeController {
     final EmployeeService employeeService;
 
@@ -30,8 +27,24 @@ public class EmployeeController {
     }
 
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
     public String deleteById(@PathVariable Long id){
         employeeService.deleteById(id);
-        return "Deleted";
+        return "Successfully Deleted.. !";
+    }
+
+    @PutMapping("/update-employee")
+    public void updateEmployee(@RequestBody EmployeeDto employee){
+        employeeService.updateEmployee(employee);
+    }
+
+    @GetMapping("/find-by-id/{id}")
+    public EmployeeDto findById(@PathVariable Long id){
+        return employeeService.findById(id);
+    }
+
+    @GetMapping("/find-by-fname/{firstName}")
+    public EmployeeDto findByFiName(@PathVariable String firstName){
+        return employeeService.findByFirstName(firstName);
     }
 }
